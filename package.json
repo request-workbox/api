@@ -1,0 +1,24 @@
+{
+  "name": "request-workbox",
+  "version": "1.0.0",
+  "description": "Request Workbox API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/request-workbox/api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/request-workbox/api/issues"
+  },
+  "homepage": "https://github.com/request-workbox/api#readme",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "lodash": "^4.17.20",
+    "moment": "^2.29.1"
+  }
+}
