@@ -1,5 +1,5 @@
 const 
-    request = require('./request');
+    request = require('./Request');
 
 module.exports = function(state) {
     if (!state.$axios) throw new Error('Missing axios instance.')

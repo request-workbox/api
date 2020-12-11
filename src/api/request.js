@@ -1,5 +1,5 @@
 const 
-    validateRequest = require('../validate/request');
+    validateRequest = require('../validate/Request');
 
 module.exports = function(state) {
     const { $axios } = state
