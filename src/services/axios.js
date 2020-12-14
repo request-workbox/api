@@ -6,8 +6,8 @@ const
 
 module.exports = function(apiKey, staging) {
     if (!apiKey || apiKey === '') throw new Error('Missing API Key.')
-    if (!_.isString(apiKey)) throw new Error('API Key should be a string.')
-    if (_.size(apiKey) !== 28) throw new Error('Incorrect API Key type.')
+    if (!_.isString(apiKey)) throw new Error('Incorrect API Key type.')
+    if (_.size(apiKey) !== 32) throw new Error('Incorrect API Key type.')
 
     // Clear auth header on non-requestworkbox domains
     function clearedAuthorizationHeader(config) {
@@ -23,8 +23,11 @@ module.exports = function(apiKey, staging) {
 
     // Add auth header
     axios.interceptors.request.use(function(config) {
-        if (config.baseURL !== apiUrl) return clearedAuthorizationHeader(config)
-        if (stagingUrl && config.baseURL !== stagingUrl) return clearedAuthorizationHeader(config)
+        if (staging) {
+            if (config.baseURL !== stagingUrl) return clearedAuthorizationHeader(config)
+        } else {
+            if (config.baseURL !== apiUrl) return clearedAuthorizationHeader(config)
+        }
 
         config.headers['x-api-key'] = apiKey
         return config

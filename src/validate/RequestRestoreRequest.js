@@ -9,23 +9,14 @@ const
 module.exports = {
     validate: function(state, options = {}) {
 
-        let requestId,
-            projectId;
-
         if (!options.requestId) throw new Error('Missing request id.')
         if (!_.isHex(options.requestId)) throw new Error('Incorrect request id type.')
-        requestId = options.requestId
 
         const payload = {
-            url: '/get-request',
-            data: { requestId }
-        }
-
-        if (state.projectId) projectId = state.projectId
-        if (options.projectId) projectId = options.projectId
-        if (projectId) {
-            if (!_.isHex(projectId)) throw new Error('Incorrect project id type.')
-            payload.data.projectId = projectId
+            url: '/restore-request',
+            data: {
+                requestId: options.requestId
+            },
         }
 
         return payload

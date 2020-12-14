@@ -7,16 +7,14 @@ const
     });
 
 module.exports = {
-    validate: function(state, options) {
+    validate: function(state, options = {}) {
         
         let projectId;
 
-        if (!state.projectId && !options.projectId) {
-            throw new Error('Missing project id.')
-        } else {
-            if (_.isHex(state.projectId)) projectId = state.projectId
-            if (_.isHex(options.projectId)) projectId = options.projectId
-        }
+        if (!state.projectId && !options.projectId) throw new Error('Missing project id.')
+        if (state.projectId) projectId = state.projectId
+        if (options.projectId) projectId = options.projectId
+        if (!_.isHex(projectId)) throw new Error('Incorrect project id type.')
         
         const payload = {
             url: '/create-request',
@@ -30,11 +28,14 @@ module.exports = {
             const request = await axios(payload)
             return request
         } catch(err) {
-            throw new Error(err)
+            throw new Error(`${err.response.status} ${err.response.data}`)
         }
     },
     response: function(request) {
-        const response = _.pickBy(request.data, ['_id','url','active','project','query','headers','body','createdAt','updatedAt'])
+        const keys = ['_id','url','active','project','query','headers','body','createdAt','updatedAt']
+        const response = _.pickBy(request.data, function(value, key) {
+            return _.includes(keys, key)
+        })
         return response
     },
     error: function(err) {

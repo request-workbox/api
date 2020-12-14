@@ -9,23 +9,23 @@ const
 module.exports = {
     validate: function(state, options = {}) {
 
-        let requestId,
-            projectId;
+        if (!options._id) throw new Error('Missing request id.')
+        if (!options.requestDetailOption) throw new Error('Missing request detail option.')
+        if (!options.requestDetailItemId) throw new Error('Missing request detail item id.')
 
-        if (!options.requestId) throw new Error('Missing request id.')
-        if (!_.isHex(options.requestId)) throw new Error('Incorrect request id type.')
-        requestId = options.requestId
-
-        const payload = {
-            url: '/get-request',
-            data: { requestId }
+        if (!_.isHex(options._id)) throw new Error('Incorrect request id type.')
+        if (!_.isHex(options.requestDetailItemId)) throw new Error('Incorrect request id type.')
+        if (!_.includes(['query','headers','body'], options.requestDetailOption)) {
+            throw new Error('Incorrect request detail option type.')
         }
 
-        if (state.projectId) projectId = state.projectId
-        if (options.projectId) projectId = options.projectId
-        if (projectId) {
-            if (!_.isHex(projectId)) throw new Error('Incorrect project id type.')
-            payload.data.projectId = projectId
+        const payload = {
+            url: '/delete-request-detail-item',
+            data: {
+                _id: options._id,
+                requestDetailOption: options.requestDetailOption,
+                requestDetailItemId: options.requestDetailItemId,
+            }
         }
 
         return payload
