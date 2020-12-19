@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/request-workbox.svg?style=flat-square)](https://www.npmjs.org/package/request-workbox)
 
-Manage, test and connect public and private endpoints.
+Manage, test and connect public and private endpoints. Run APIs without code. [Learn more](https://requestworkbox.com)
 ## Table of Contents
 
   - [Features](#features)
@@ -11,16 +11,21 @@ Manage, test and connect public and private endpoints.
 ## Features
 
 - Store HTTP API requests, including the url, headers, query, and body values.
-- Create custom API workflows.
-- Trigger workflows with a single HTTP API url.
-- Supports queueing and scheduling, or returning results immediately.
-- Assign a workflow webhook.
-- View upcoming workflow schedule and past workflow instances.
-- Configure workflows to pass information between requests.
 - Store credentials and payloads in storage for templating during workflow runtime.
-- Create status checks for your API requests.
-- Allocate general purpose webhook endpoints to accept and store incoming payloads.
-- Generate API keys to access workflows from any application.
+- Supports queueing, scheduling, and returning results immediately.
+- Configure custom API workflows to pass information between requests.
+- Trigger workflows from the [Dashboard](https://dashboard.requestworkbox.com) or REST API.
+- Accept incoming workflow payloads.
+- Send a webhook after workflow completion.
+- View upcoming workflow schedule and past workflow instances.
+- Allocate general purpose webhook endpoints to store incoming payloads (beta).
+- Generate API tokens to access workflows and services from any application.
+- Create status checks for your API requests (beta).
+- Invite users to collaborate on projects.
+- Define team member permissions.
+- Lock shared API resources.
+- Redact sensitive request data.
+- Workflow batching (in development).
 
 ## Installing
 
