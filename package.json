@@ -1,6 +1,6 @@
 {
   "name": "request-workbox",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Request Workbox API",
   "main": "index.js",
   "scripts": {

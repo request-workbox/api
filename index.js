@@ -13,7 +13,7 @@ module.exports = function(options) {
     }
     
     // Attach axios instance
-    const axiosInstance = axios(options.apiKey, options.staging)
+    const axiosInstance = axios(options.apiKey, options.stagingUrl)
     state.$axios = axiosInstance
 
     // return api
