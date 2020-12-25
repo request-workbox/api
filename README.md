@@ -81,9 +81,201 @@ Let me know if you have any questions or issues, I’d be delighted to help. I t
 
 ## API
 
+Accepts an API Key and project id. Subsequent requests are tied to the same project. Responses are based on the API key. Do not share your API keys with team members. Members can access your project (after accepting your invitation) with their own API tokens.
+
+```
+const requestWorkbox = require('request-workbox');
+
+const RequestWorkbox = requestWorkbox({
+    apiKey: '4DDFE1ADF0064EA88B4D7111D8E2FC55',
+    projectId: '5fc455ce1924bd02bf49d28f',
+})
+```
+
 ### Project
 
+#### Create project
+
+Creates and returns a new project.
+
+```
+// HTTP POST https://api.requestworkbox.com/create-project
+
+const project = await RequestWorkbox.createProject({
+  projectId: '5fc455ce1924bd02bf49d28f', // defaults to initialized value
+})
+```
+
+#### List projects
+
+List projects you own, are a member of, or have been invited to.
+
+```
+// HTTP POST https://api.requestworkbox.com/list-projects
+
+const projects = await RequestWorkbox.listProjects({
+  projectId: '5fc455ce1924bd02bf49d28f', // defaults to initialized value
+})
+```
+
+#### Get project
+
+Returns an existing project. Requires read permission.
+
+```
+// HTTP POST https://api.requestworkbox.com/get-project
+
+const projects = await RequestWorkbox.getProject({
+  projectId: '5fc455ce1924bd02bf49d28f', // defaults to initialized value
+})
+```
+
+#### Update project
+
+Update project name and permissions. Requires write permission. Returns updated project.
+
+```
+// HTTP POST https://api.requestworkbox.com/update-project
+
+const projects = await RequestWorkbox.updateProject({
+  _id: '5fc455ce1924bd02bf49d28f', // projectId, defaults to initialized value
+  name: 'Email Endpoints', // string
+  returnRequest: 'owner', // owner, team, public
+  returnWorkflow: 'owner', // owner, team, public
+  queueRequest: 'owner', // owner, team, public
+  queueWorkflow: 'owner', // owner, team, public
+  scheduleRequest: 'owner', // owner, team, public
+  scheduleWorkflow: 'owner', // owner, team, public
+})
+```
+
+#### Archive project
+
+Archives a project. Owner only access. Returns updated project.
+
+```
+// HTTP POST https://api.requestworkbox.com/archive-project
+
+const projects = await RequestWorkbox.archiveProject({
+  projectId: '5fc455ce1924bd02bf49d28f', // defaults to initialized value
+})
+```
+
+#### Restore project
+
+Restores a project. Owner only access. Returns updated project.
+
+```
+// HTTP POST https://api.requestworkbox.com/restore-project
+
+const projects = await RequestWorkbox.restoreProject({
+  projectId: '5fc455ce1924bd02bf49d28f', // optional, defaults to initialized value
+})
+```
+
 ### Request
+
+#### Create request
+
+Creates and returns a new request. Requires write permission.
+
+```
+// HTTP POST https://api.requestworkbox.com/create-request
+
+const request = await RequestWorkbox.createRequest({
+  projectId: '5fc455ce1924bd02bf49d28f', // defaults to initialized value
+})
+```
+
+#### List requests
+
+List requests for a given project. Requires read permission.
+
+```
+// HTTP POST https://api.requestworkbox.com/list-request
+
+const request = await RequestWorkbox.listRequests({
+  projectId: '5fc455ce1924bd02bf49d28f', // defaults to initialized value
+})
+```
+
+#### Get request
+
+Returns an existing request. Requires read permission.
+
+```
+// HTTP POST https://api.requestworkbox.com/get-request
+
+const request = await RequestWorkbox.getRequest({
+  requestId: '5fc726bd1684be02dc49e48d',
+})
+```
+
+#### Save request changes
+
+Saves request changes. Requires write permission. Returns updated request.
+
+```
+// HTTP POST https://api.requestworkbox.com/save-request-changes
+
+const request = await RequestWorkbox.saveRequestChanges({
+  _id: '5fc726bd1684be02dc49e48d', // requestId
+  name: 'Send customer email',
+  url: 'https://domain.com/send-customer-email',
+  method: 'POST',
+})
+```
+
+#### Add request detail item
+
+Add request detail item. Requires write permission. Returns updated request.
+
+```
+// HTTP POST https://api.requestworkbox.com/add-request-detail-item
+
+const request = await RequestWorkbox.addRequestDetailItem({
+  _id: '5fc726bd1684be02dc49e48d', // requestId
+  requestDetailOption: 'query' // query, headers, body
+})
+```
+
+#### Delete request detail item
+
+Delete request detail item. Requires write permission. Returns updated request.
+
+```
+// HTTP POST https://api.requestworkbox.com/delete-request-detail-item
+
+const request = await RequestWorkbox.deleteRequestDetailItem({
+  _id: '5fc726bd1684be02dc49e48d', // requestId
+  requestDetailOption: 'query' // query, headers, body
+  requestDetailItemId: '5fc726iu36849db2dc4ed38d' // item to remove
+})
+```
+
+#### Archive request
+
+Archive request. Owner only access. Returns updated request.
+
+```
+// HTTP POST https://api.requestworkbox.com/archive-request
+
+const request = await RequestWorkbox.archiveRequest({
+  requestId: '5fc726bd1684be02dc49e48d',
+})
+```
+
+#### Restore request
+
+Restore request. Owner only access. Returns updated request.
+
+```
+// HTTP POST https://api.requestworkbox.com/restore-request
+
+const request = await RequestWorkbox.restoreRequest({
+  requestId: '5fc726bd1684be02dc49e48d',
+})
+```
 
 ### Workflow
 
