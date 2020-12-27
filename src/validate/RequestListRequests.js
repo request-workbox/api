@@ -28,11 +28,12 @@ module.exports = {
             const request = await axios(payload)
             return request
         } catch(err) {
-            throw new Error(`${err.response.status} ${err.response.data}`)
+            if (err.response) throw new Error(`${err.response.status} ${err.response.data}`)
+            else throw new Error(`${err.message}`)
         }
     },
     response: function(request) {
-        const keys = ['_id','url','active','project','query','headers','body','createdAt','updatedAt']
+        const keys = ['_id','url','name','method','active','projectId','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt']
         const response = _.map(request.data, (request) => {
             const responseData = _.pickBy(request, function(value, key) {
                 return _.includes(keys, key)
@@ -42,6 +43,6 @@ module.exports = {
         return response
     },
     error: function(err) {
-        return err
+        throw new Error(err.message)
     },
 }

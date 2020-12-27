@@ -12,7 +12,12 @@ module.exports = {
         if (!options._id) throw new Error('Missing request id.')
         if (!_.isHex(options._id)) throw new Error('Incorrect request id type.')
 
-        let updates = _.pick(options, ['_id', 'url', 'query', 'headers', 'body'])
+        let updates = _.pick(options, [
+            '_id', 'url','method','name',
+            'authorizationType','authorization',
+            'query', 'headers', 'body',
+            'lockedResource','preventExecution','sensitiveResponse',  
+        ])
 
         const payload = {
             url: '/save-request-changes',
@@ -26,17 +31,18 @@ module.exports = {
             const request = await axios(payload)
             return request
         } catch(err) {
-            throw new Error(`${err.response.status} ${err.response.data}`)
+            if (err.response) throw new Error(`${err.response.status} ${err.response.data}`)
+            else throw new Error(`${err.message}`)
         }
     },
     response: function(request) {
-        const keys = ['_id','url','active','project','query','headers','body','createdAt','updatedAt']
+        const keys = ['_id','url','name','method','active','projectId','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt']
         const response = _.pickBy(request.data, function(value, key) {
             return _.includes(keys, key)
         })
         return response
     },
     error: function(err) {
-        return err
+        throw new Error(err.message)
     },
 }

@@ -325,7 +325,15 @@ const request = await RequestWorkbox.Request.saveRequestChanges({
 | name | Optional | Request name.
 | url | Optional | HTTPS URL.
 | method | Optional | HTTP request method.
-
+| authorizationType | Optional | Authorization type.
+| authorization | Optional | Request authorization.
+| query | Optional | Request query.
+| headers | Optional | Request headers.
+| query | Optional | Request query.
+| body | Optional | Request body.
+| lockedResource | Optional | Locked resource option.
+| preventExecution | Optional | Prevent execution option.
+| sensitiveResponse | Optional | Senstive response option.
 
 ### Add request detail item
 
