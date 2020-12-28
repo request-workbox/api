@@ -1,5 +1,4 @@
 const 
-    _ = require('lodash'),
     createRequest = require('./RequestCreateRequest'),
     listRequests = require('./RequestListRequests'),
     getRequest = require('./RequestGetRequest'),

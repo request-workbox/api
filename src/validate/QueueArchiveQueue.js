@@ -5,17 +5,17 @@ const
             return /^[a-f0-9]{24}$/.test(string)
         }
     }),
-    outgoingKeys = ['requestId'],
-    incomingKeys = ['_id','url','name','method','active','projectId','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt'];
+    outgoingKeys = ['queueId'],
+    incomingKeys = ['_id','active','status','stats','instanceId','workflowId','workflowName','storageInstanceId','queueType','date','createdAt','updatedAt'];
 
 module.exports = {
     validate: function(state, options = {}) {
 
-        if (!options.requestId) throw new Error('Missing request id.')
-        if (!_.isHex(options.requestId)) throw new Error('Incorrect request id type.')
+        if (!options.queueId) throw new Error('Missing queue id.')
+        if (!_.isHex(options.queueId)) throw new Error('Incorrect queue id type.')
         
         const payload = {
-            url: '/archive-request',
+            url: '/archive-queue',
             data: _.pick(options, outgoingKeys),
         }
 

@@ -738,7 +738,6 @@ const queues = await RequestWorkbox.Queue.listQueues({
 | Option    | Required | Description |
 |-----------|----------|-------------|
 | workflowId | Yes | Workflow id.
-| projectId | Optional | Project id.
 | date | Optional | ISO 8601 date.
 
 ### Archive queue

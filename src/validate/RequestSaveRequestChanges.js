@@ -4,26 +4,21 @@ const
         isHex: function(string) {
             return /^[a-f0-9]{24}$/.test(string)
         }
-    });
+    }),
+    outgoingKeys = ['_id','name','url','method','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse'],
+    incomingKeys = ['_id','url','name','method','active','projectId','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt'];
 
 module.exports = {
     validate: function(state, options = {}) {
 
-        if (!options._id) throw new Error('Missing request id.')
-        if (!_.isHex(options._id)) throw new Error('Incorrect request id type.')
-
-        let updates = _.pick(options, [
-            '_id', 'url','method','name',
-            'authorizationType','authorization',
-            'query', 'headers', 'body',
-            'lockedResource','preventExecution','sensitiveResponse',  
-        ])
-
+        if (!options.requestId) throw new Error('Missing request id.')
+        if (!_.isHex(options.requestId)) throw new Error('Incorrect request id type.')
+        
         const payload = {
-            url: '/save-request-changes',
-            data: updates,
+            url: '/restore-request',
+            data: _.pick(options, outgoingKeys),
         }
-
+        
         return payload
     },
     request: async function(axios, payload) {
@@ -36,10 +31,7 @@ module.exports = {
         }
     },
     response: function(request) {
-        const keys = ['_id','url','name','method','active','projectId','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt']
-        const response = _.pickBy(request.data, function(value, key) {
-            return _.includes(keys, key)
-        })
+        const response = _.pick(request.data, incomingKeys)
         return response
     },
     error: function(err) {

@@ -5,17 +5,20 @@ const
             return /^[a-f0-9]{24}$/.test(string)
         }
     }),
-    outgoingKeys = ['requestId'],
-    incomingKeys = ['_id','url','name','method','active','projectId','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt'];
+    outgoingKeys = ['instanceId','statId','projectId'],
+    incomingKeys = ['_id','active','projectId','workflowId','workflowName','queueType','queueId','stats','totalBytesDown','totalBytesUp','totalMs','createdAt','updatedAt'];
 
 module.exports = {
     validate: function(state, options = {}) {
 
-        if (!options.requestId) throw new Error('Missing request id.')
-        if (!_.isHex(options.requestId)) throw new Error('Incorrect request id type.')
+        if (!options.instanceId) throw new Error('Missing instance id.')
+        if (!options.statId) throw new Error('Missing stat id.')
+
+        if (!_.isHex(options.instanceId)) throw new Error('Incorrect instance id type.')
+        if (!_.isHex(options.statId)) throw new Error('Incorrect stat id type.')
         
         const payload = {
-            url: '/archive-request',
+            url: '/download-instance-stat',
             data: _.pick(options, outgoingKeys),
         }
 

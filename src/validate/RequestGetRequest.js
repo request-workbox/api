@@ -4,30 +4,21 @@ const
         isHex: function(string) {
             return /^[a-f0-9]{24}$/.test(string)
         }
-    });
+    }),
+    outgoingKeys = ['requestId','projectId'],
+    incomingKeys = ['_id','url','name','method','active','projectId','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt'];
 
 module.exports = {
     validate: function(state, options = {}) {
 
-        let requestId,
-            projectId;
-
         if (!options.requestId) throw new Error('Missing request id.')
         if (!_.isHex(options.requestId)) throw new Error('Incorrect request id type.')
-        requestId = options.requestId
-
+        
         const payload = {
             url: '/get-request',
-            data: { requestId }
+            data: _.pick(options, outgoingKeys),
         }
-
-        if (state.projectId) projectId = state.projectId
-        if (options.projectId) projectId = options.projectId
-        if (projectId) {
-            if (!_.isHex(projectId)) throw new Error('Incorrect project id type.')
-            payload.data.projectId = projectId
-        }
-
+        
         return payload
     },
     request: async function(axios, payload) {
@@ -40,10 +31,7 @@ module.exports = {
         }
     },
     response: function(request) {
-        const keys = ['_id','url','name','method','active','projectId','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt']
-        const response = _.pickBy(request.data, function(value, key) {
-            return _.includes(keys, key)
-        })
+        const response = _.pick(request.data, incomingKeys)
         return response
     },
     error: function(err) {

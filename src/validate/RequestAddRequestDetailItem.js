@@ -4,25 +4,19 @@ const
         isHex: function(string) {
             return /^[a-f0-9]{24}$/.test(string)
         }
-    });
+    }),
+    outgoingKeys = ['_id','requestDetailOption'],
+    incomingKeys = ['_id','url','name','method','active','projectId','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt'];
 
 module.exports = {
     validate: function(state, options = {}) {
 
         if (!options._id) throw new Error('Missing request id.')
         if (!_.isHex(options._id)) throw new Error('Incorrect request id type.')
-
-        if (!options.requestDetailOption) throw new Error('Missing request detail option.')
-        if (!_.includes(['authorization','query','headers','body'], options.requestDetailOption)) {
-            throw new Error('Incorrect request detail option type.')
-        }
-
+        
         const payload = {
             url: '/add-request-detail-item',
-            data: {
-                _id: options._id,
-                requestDetailOption: options.requestDetailOption,
-            }
+            data: _.pick(options, outgoingKeys),
         }
 
         return payload
@@ -37,10 +31,7 @@ module.exports = {
         }
     },
     response: function(request) {
-        const keys = ['_id','url','name','method','active','projectId','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt']
-        const response = _.pickBy(request.data, function(value, key) {
-            return _.includes(keys, key)
-        })
+        const response = _.pick(request.data, incomingKeys)
         return response
     },
     error: function(err) {

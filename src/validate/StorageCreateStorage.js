@@ -5,17 +5,20 @@ const
             return /^[a-f0-9]{24}$/.test(string)
         }
     }),
-    outgoingKeys = ['requestId'],
-    incomingKeys = ['_id','url','name','method','active','projectId','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt'];
+    outgoingKeys = ['projectId','storageType'],
+    incomingKeys = ['_id','active','name','projectId','storageType','storageValue','mimetype','originalname','size','totalBytesDown','totalBytesUp','totalMs','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt'];
 
 module.exports = {
     validate: function(state, options = {}) {
 
-        if (!options.requestId) throw new Error('Missing request id.')
-        if (!_.isHex(options.requestId)) throw new Error('Incorrect request id type.')
+        if (!options.projectId) throw new Error('Missing project id.')
+        if (!options.storageType) throw new Error('Missing storage type.')
+
+        if (!_.isHex(options.projectId)) throw new Error('Incorrect project id type.')
+        if (!_.isString(options.storageType)) throw new Error('Incorrect storage type.')
         
         const payload = {
-            url: '/archive-request',
+            url: '/create-storage',
             data: _.pick(options, outgoingKeys),
         }
 
