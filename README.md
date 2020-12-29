@@ -173,7 +173,7 @@ const project = await RequestWorkbox.Project.createProject()
 
 ### List projects
 
-List projects you own, are a member of, or have been invited to.
+List projects you own or are a member of.
 
 ```
 // POST https://api.requestworkbox.com/list-projects
