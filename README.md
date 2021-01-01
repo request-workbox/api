@@ -12,8 +12,8 @@ Manage, test and connect public and private endpoints. Run APIs without code. [L
   - [Support](#support)
   - [API](#api)
     - [Getting started](#getting-started)
-    - [Request sandbox](#request-sandbox)
-    - [Workflow sandbox](#workflow-sandbox)
+    - [Start request](#start-request)
+    - [Start workflow](#start-workflow)
     - [Project](#project)
     - [Request](#request)
     - [Workflow](#workflow)
@@ -91,6 +91,8 @@ Let me know if you have any questions or issues, I’d be delighted to help. I t
 
 Accepts an API Key and project id. Subsequent requests are tied to the same project. Responses are permission based. **Do not share your API keys with team members or anyone else.** Members can access your project (after accepting your invitation) with their own API keys. You can invite a user to your project within the [dashboard](https://dashboard.requestworkbox.com).
 
+### Getting started
+
 ```
 const requestWorkbox = require('request-workbox')
 
@@ -100,16 +102,7 @@ const RequestWorkbox = requestWorkbox({
 })
 ```
 
-#### Getting started
-
-You can access a sandbox project before signing up for an account using these credentials (contains team-read permission).
-
-```
-// apiKey: 4DDFE1ADF0064EA88B4D7111D8E2FC55
-// projectId: 5fc455ce1924bd02bf49d28f
-```
-
-#### Request Sandbox
+#### Return Request
 
 Returns results immediately (after initialization).
 
@@ -121,6 +114,8 @@ const requestResults = await RequestWorkbox.Request.startRequest({
     workflowType: 'return',
 })
 ```
+
+#### Queue and Schedule Request
 
 Returns queue id and instance id immediately (after initialization). Webhooks currently unsupported for queue requests and schedule requests.
 
@@ -134,7 +129,7 @@ const { queueId, instanceId } = await RequestWorkbox.Request.startRequest({
 })
 ```
 
-#### Workflow Sandbox
+#### Return Workflow
 
 Returns results immediately (after initialization).
 
@@ -146,6 +141,8 @@ const workflowResults = await RequestWorkbox.Workflow.startWorkflow({
     workflowType: 'return',
 })
 ```
+
+#### Queue and Schedule Workflow
 
 Returns queue id and instance id immediately (after initialization). Results are sent to the first request listed in `Workflow.webhooks` on completion or error. Request errors break the workflow chain and exit immediately to send the results of the successfully sent requests to the webhook.
 
@@ -392,6 +389,22 @@ const request = await RequestWorkbox.Request.archiveRequest({
 ### Restore request
 
 Restore request. Owner only access. Returns updated request.
+
+```
+// POST https://api.requestworkbox.com/restore-request
+
+const request = await RequestWorkbox.Request.restoreRequest({
+  requestId: '5fc726bd1684be02dc49e48d',
+})
+```
+
+| Option    | Required | Description |
+|-----------|----------|-------------|
+| requestId | Yes | Request id.
+
+### Start request
+
+Trigger a dedicated request workflow. Owner only access. Returns results immediately (after initialization).
 
 ```
 // POST https://api.requestworkbox.com/restore-request
