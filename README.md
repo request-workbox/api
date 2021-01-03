@@ -11,9 +11,6 @@ Manage, test and connect public and private endpoints. Run APIs without code. [L
   - [Pricing](#pricing)
   - [Support](#support)
   - [API](#api)
-    - [Getting started](#getting-started)
-    - [Start request](#start-request)
-    - [Start workflow](#start-workflow)
     - [Project](#project)
     - [Request](#request)
     - [Workflow](#workflow)
@@ -27,9 +24,6 @@ Manage, test and connect public and private endpoints. Run APIs without code. [L
     - [Storage](#storage-schema)
     - [Queue](#queue-schema)
     - [Instance](#instance-schema)
-    - [Queue Stat](#queue-stat-schema)
-    - [Instance Stat](#instance-stat-schema)
-    - [Usage](#usage-schema)
   - [Considerations](#considerations)
 
 ## Features
@@ -102,26 +96,11 @@ const RequestWorkbox = requestWorkbox({
 })
 ```
 
-#### Return Request
-
-Returns results immediately (after initialization).
-
 ```
-// POST https://api.requestworkbox.com/return-request/5fc726bd1684be02dc49e48d
-
 const requestResults = await RequestWorkbox.Request.startRequest({
     requestId: '5fc726bd1684be02dc49e48d',
     workflowType: 'return',
 })
-```
-
-#### Queue and Schedule Request
-
-Returns queue id and instance id immediately (after initialization). Webhooks currently unsupported for queue requests and schedule requests.
-
-```
-// POST https://api.requestworkbox.com/queue-request/5fc726bd1684be02dc49e48d
-// POST https://api.requestworkbox.com/schedule-request/5fc726bd1684be02dc49e48d
 
 const { queueId, instanceId } = await RequestWorkbox.Request.startRequest({
     requestId: '5fc726bd1684be02dc49e48d',
@@ -129,26 +108,11 @@ const { queueId, instanceId } = await RequestWorkbox.Request.startRequest({
 })
 ```
 
-#### Return Workflow
-
-Returns results immediately (after initialization).
-
 ```
-// POST https://api.requestworkbox.com/return-workflow/5fc726bd9834be02d99ee48d
-
 const workflowResults = await RequestWorkbox.Workflow.startWorkflow({
     workflowId: '5fc726bd9834be02d99ee48d',
     workflowType: 'return',
 })
-```
-
-#### Queue and Schedule Workflow
-
-Returns queue id and instance id immediately (after initialization). Results are sent to the first request listed in `Workflow.webhooks` on completion or error. Request errors break the workflow chain and exit immediately to send the results of the successfully sent requests to the webhook.
-
-```
-// POST https://api.requestworkbox.com/queue-workflow/5fc726bd9834be02d99ee48d
-// POST https://api.requestworkbox.com/schedule-workflow/5fc726bd9834be02d99ee48d
 
 const { queueId, instanceId } = await RequestWorkbox.Workflow.startWorkflow({
     workflowId: '5fc726bd9834be02d99ee48d',
@@ -156,9 +120,13 @@ const { queueId, instanceId } = await RequestWorkbox.Workflow.startWorkflow({
 })
 ```
 
+#### Queue Id and Instance Id
+
+Queue and Schedule workflows return a queue id and instance id (after initialization). The results are sent to the first request listed in `Workflow.webhooks`. Error responses break the workflow chain, but still trigger a webhook containing the successful request results.
+
 ### Project
 
-### Create project
+### Project.createProject()
 
 Creates and returns a new project.
 
@@ -168,7 +136,7 @@ Creates and returns a new project.
 const project = await RequestWorkbox.Project.createProject()
 ```
 
-### List projects
+### Project.listProjects()
 
 List projects you own or are a member of.
 
@@ -178,7 +146,7 @@ List projects you own or are a member of.
 const projects = await RequestWorkbox.Project.listProjects()
 ```
 
-### Get project
+### Project.getProject(options)
 
 Returns an existing project. Requires read permission.
 
@@ -194,7 +162,7 @@ const project = await RequestWorkbox.Project.getProject({
 |-----------|----------|-------------|
 | projectId | Yes | Project id.
 
-### Update project
+### Project.updateProject(options)
 
 Update project name and permissions. Owner only access. Returns updated project.
 
@@ -218,7 +186,7 @@ const project = await RequestWorkbox.Project.updateProject({
 | queueWorkflow | Optional | Queue workflow permission.
 | scheduleWorkflow | Optional | Schedule workflow permission.
 
-### Archive project
+### Project.archiveProject(options)
 
 Archives a project. Owner only access. Returns updated project.
 
@@ -234,7 +202,7 @@ const project = await RequestWorkbox.Project.archiveProject({
 |-----------|----------|-------------|
 | projectId | Yes | Project id.
 
-### Restore project
+### Project.restoreProject(options)
 
 Restores a project. Owner only access. Returns updated project.
 
@@ -252,7 +220,7 @@ const project = await RequestWorkbox.Project.restoreProject({
 
 ### Request
 
-### Create request
+### Request.createRequest(options)
 
 Creates and returns a new request. Requires write permission.
 
@@ -268,7 +236,7 @@ const request = await RequestWorkbox.Request.createRequest({
 |-----------|----------|-------------|
 | projectId | Yes | Project id.
 
-### List requests
+### Request.listRequests(options)
 
 List requests for a given project. Requires read permission.
 
@@ -284,7 +252,7 @@ const requests = await RequestWorkbox.Request.listRequests({
 |-----------|----------|-------------|
 | projectId | Yes | Project id.
 
-### Get request
+### Request.getRequest(options)
 
 Returns an existing request. Requires read permission.
 
@@ -301,7 +269,7 @@ const request = await RequestWorkbox.Request.getRequest({
 | requestId | Yes | Request id.
 | projectId | Optional | Project id.
 
-### Save request changes
+### Request.saveRequestChanges(options)
 
 Saves request changes. Requires write permission. Returns updated request.
 
@@ -332,7 +300,7 @@ const request = await RequestWorkbox.Request.saveRequestChanges({
 | preventExecution | Optional | Prevent execution option.
 | sensitiveResponse | Optional | Senstive response option.
 
-### Add request detail item
+### Request.addRequestDetailItem(options)
 
 Pushes an option to the request header, query, or body. Requires write permission. Returns updated request.
 
@@ -350,7 +318,7 @@ const request = await RequestWorkbox.Request.addRequestDetailItem({
 | _id | Yes | Request id.
 | requestDetailOption | Yes | Request detail option.
 
-### Delete request detail item
+### Request.deleteRequestDetailItem(options)
 
 Removes an option from the request header, query, or body. Requires write permission. Returns updated request.
 
@@ -370,7 +338,7 @@ const request = await RequestWorkbox.Request.deleteRequestDetailItem({
 | requestDetailOption | Yes | Request detail option.
 | requestDetailItemId | Yes | Existing request detail item id.
 
-### Archive request
+### Request.archiveRequest(options)
 
 Archive request. Owner only access. Returns updated request.
 
@@ -386,7 +354,7 @@ const request = await RequestWorkbox.Request.archiveRequest({
 |-----------|----------|-------------|
 | requestId | Yes | Request id.
 
-### Restore request
+### Request.restoreRequest(options)
 
 Restore request. Owner only access. Returns updated request.
 
@@ -402,9 +370,9 @@ const request = await RequestWorkbox.Request.restoreRequest({
 |-----------|----------|-------------|
 | requestId | Yes | Request id.
 
-### Start request
+### Request.startRequest(options)
 
-Trigger a dedicated request workflow. Owner only access. Returns results immediately (after initialization).
+Trigger a dedicated request workflow. Permission based access. Returns workflow results.
 
 ```
 // POST https://api.requestworkbox.com/restore-request
@@ -420,7 +388,7 @@ const request = await RequestWorkbox.Request.restoreRequest({
 
 ### Workflow
 
-### Create workflow
+### Workflow.createWorkflow(options)
 
 Creates and returns a new workflow. Requires write permission.
 
@@ -436,7 +404,7 @@ const workflow = await RequestWorkbox.Workflow.createWorkflow({
 |-----------|----------|-------------|
 | projectId | Yes | Project id.
 
-### List workflows
+### Workflow.listWorkflows(options)
 
 List workflows for a given project. Requires read permission.
 
@@ -452,7 +420,7 @@ const workflows = await RequestWorkbox.Workflow.listWorkflows({
 |-----------|----------|-------------|
 | projectId | Yes | Project id.
 
-### Get workflow
+### Workflow.getWorkflow(options)
 
 Returns an existing workflow. Requires read permission.
 
@@ -469,7 +437,7 @@ const workflow = await RequestWorkbox.Workflow.getWorkflow({
 | workflowId | Yes | Workflow id.
 | projectId | Optional | Project id.
 
-### Save workflow changes
+### Workflow.saveWorkflowChanges(options)
 
 Saves workflow changes. Requires write permission. Returns updated workflow.
 
@@ -492,7 +460,7 @@ const workflow = await RequestWorkbox.Workflow.saveWorkflowChanges({
 | lockedResource | Optional | Prevent changes.
 | preventExecution | Optional | Prevent execution.
 
-### Add workflow task
+### Workflow.addWorkflowTask(options)
 
 Adds a task to the workflow chain at `Workflow.tasks`. Requires write permission. Returns updated workflow.
 
@@ -508,7 +476,7 @@ const workflow = await RequestWorkbox.Workflow.addWorkflowTask({
 |-----------|----------|-------------|
 | _id | Yes | Workflow id.
 
-### Delete workflow task
+### Workflow.deleteWorkflowTask(options)
 
 Delete request (task) from the workflow chain. Requires write permission. Returns updated workflow.
 
@@ -526,7 +494,7 @@ const workflow = await RequestWorkbox.Workflow.deleteWorkflowTask({
 | _id | Yes | Workflow id.
 | taskId | Yes | Workflow task id.
 
-### Archive workflow
+### Workflow.archiveWorkflow(options)
 
 Archive workflow. Owner only access. Returns updated workflow.
 
@@ -542,7 +510,7 @@ const workflow = await RequestWorkbox.Workflow.archiveWorkflow({
 |-----------|----------|-------------|
 | workflowId | Yes | Workflow id.
 
-### Restore workflow
+### Workflow.restoreWorkflow(options)
 
 Restore workflow. Owner only access. Returns updated workflow.
 
@@ -560,7 +528,7 @@ const workflow = await RequestWorkbox.Workflow.restoreWorkflow({
 
 ### Storage
 
-### Create storage
+### Storage.createStorage(options)
 
 Creates and returns a new storage. Requires write permission.
 
@@ -578,7 +546,7 @@ const storage = await RequestWorkbox.Storage.createStorage({
 | projectId | Yes | Project id.
 | storageType | Yes | Storage type.
 
-### List storages
+### Storage.listStorages(options)
 
 List storages for a given project. Requires read permission.
 
@@ -594,7 +562,7 @@ const storages = await RequestWorkbox.Storage.listStorages({
 |-----------|----------|-------------|
 | projectId | Yes | Workflow id.
 
-### Get storage
+### Storage.getStorage(options)
 
 Returns an existing storage. Requires read permission.
 
@@ -611,7 +579,7 @@ const storage = await RequestWorkbox.Storage.getStorage({
 | storageId | Yes | Storage id.
 | projectId | Optional | Project id.
 
-### Save storage changes
+### Storage.saveStorageChanges(options)
 
 Saves storage changes. Requires write permission. Returns updated storage.
 
@@ -632,7 +600,7 @@ const storage = await RequestWorkbox.Storage.saveStorageChanges({
 | preventExecution | Optional | Prevent execution.
 | sensitiveResponse | Optional | Redacts public response.
 
-### Archive storage
+### Storage.archiveStorage(options)
 
 Archive storage. Owner only access. Returns updated storage.
 
@@ -648,7 +616,7 @@ const storage = await RequestWorkbox.Storage.archiveStorage({
 |-----------|----------|-------------|
 | storageId | Yes | Storage id.
 
-### Restore storage
+### Storage.restoreStorage(options)
 
 Restore storage. Owner only access. Returns updated storage.
 
@@ -664,7 +632,7 @@ const storage = await RequestWorkbox.Storage.restoreStorage({
 |-----------|----------|-------------|
 | storageId | Yes | Storage id.
 
-### Get text storage data
+### Storage.getTextStorageData(options)
 
 Retreive text storage value. Requires read permissions, or write permissions if data returns sensitive response. Returns storage and storage value.
 
@@ -681,7 +649,7 @@ const storage = await RequestWorkbox.Storage.getTextStorageData({
 | storageId | Yes | Storage id.
 | projectId | Optional | Project id.
 
-### Get file storage data
+### Storage.getFileStorageData(options)
 
 Retreive file storage value. Requires read permissions, or write permissions if data returns sensitive response. Returns file.
 
@@ -698,9 +666,9 @@ const storage = await RequestWorkbox.Storage.getFileStorageData({
 | storageId | Yes | Storage id.
 | projectId | Optional | Project id.
 
-### Get file storage usage
+### Storage.getStorageUsage(options)
 
-Get file storage usage. Requires write permissions. Returns storage and usage.
+Get storage usage. Requires write permissions. Returns storage and usage.
 
 ```
 // POST https://api.requestworkbox.com/get-storage-usage
@@ -715,7 +683,7 @@ const storage = await RequestWorkbox.Storage.getStorageUsage({
 | storageId | Yes | Storage id.
 | projectId | Optional | Project id.
 
-### Update text storage data
+### Storage.updateTextStorageData(options)
 
 Update text storage value. Requires write permission. Returns updated storage and value.
 
@@ -736,7 +704,7 @@ const storage = await RequestWorkbox.Storage.updateTextStorageData({
 
 ### Queue
 
-### List queues
+### Queue.listQueues(options)
 
 List queues for a given workflow from start to end of day (in UTC). Requires read permission.
 
@@ -753,7 +721,7 @@ const queues = await RequestWorkbox.Queue.listQueues({
 | workflowId | Yes | Workflow id.
 | date | Optional | ISO 8601 date.
 
-### Archive queue
+### Queue.archiveQueue(options)
 
 Archive queue. Owner only access. Returns updated queue.
 
@@ -769,7 +737,7 @@ const queue = await RequestWorkbox.Queue.archiveQueue({
 |-----------|----------|-------------|
 | queueId | Yes | Queue id.
 
-### Archive all queues
+### Queue.archiveAllQueues(options)
 
 Archive all queues for a given workflow and queue type. Only includes queues from start to end of day (in UTC). Owner only access. Returns updated queues.
 
@@ -789,7 +757,7 @@ const queues = await RequestWorkbox.Queue.archiveAllQueues({
 
 ### Instance
 
-### List instances
+### Instance.listInstances(options)
 
 List instances for a given project. Requires read permission.
 
@@ -805,7 +773,7 @@ const instances = await RequestWorkbox.Instance.listInstances({
 |-----------|----------|-------------|
 | projectId | Yes | Project id.
 
-### Get instance
+### Instance.getInstance(options)
 
 Returns an existing instance. Requires read permission.
 
@@ -822,9 +790,9 @@ const instance = await RequestWorkbox.Instance.getInstance({
 | instanceId | Yes | Instance id.
 | projectId | Optional | Project id.
 
-### Get instance usage
+### Instance.getInstanceDetail(options)
 
-Returns instance usage. Requires write permission. Returns instance with usage.
+Returns instance stat details. Requires write permission. Returns instance with usage.
 
 ```
 // POST https://api.requestworkbox.com/get-instance-detail
@@ -839,9 +807,43 @@ const instanceDetail = await RequestWorkbox.Instance.getInstanceDetail({
 | instanceId | Yes | Instance id.
 | projectId | Optional | Project id.
 
-### Download instance stat
+### Instance.getInstanceDetail(options)
 
-Returns entire instance stat (including response data). Requires read permission, or write permission if the stat returns a sensitive response.
+Returns instance details (results without sensitive data). Requires write permission or read permission with includeSensitive permission.
+
+```
+// POST https://api.requestworkbox.com/get-instance-detail
+
+const instanceDetail = await RequestWorkbox.Instance.getInstanceDetail({
+  instanceId: '5fc146db473fee8d98bd1de',
+})
+```
+
+| Option    | Required | Description |
+|-----------|----------|-------------|
+| instanceId | Yes | Instance id.
+| projectId | Optional | Project id.
+
+### Instance.getInstanceUsage(options)
+
+Returns instance usage. Requires write permission..
+
+```
+// POST https://api.requestworkbox.com/get-instance-detail
+
+const instanceDetail = await RequestWorkbox.Instance.getInstanceUsage({
+  instanceId: '5fc146db473fee8d98bd1de',
+})
+```
+
+| Option    | Required | Description |
+|-----------|----------|-------------|
+| instanceId | Yes | Instance id.
+| projectId | Optional | Project id.
+
+### Instance.downloadInstanceStat(options)
+
+Returns entire instance stat (including response data). Requires write permission, or read permission with includeSensitive permission if the stat returns a sensitive response.
 
 ```
 // POST https://api.requestworkbox.com/download-instance-stat
@@ -999,6 +1001,24 @@ const instanceStat = await RequestWorkbox.Instance.downloadInstanceStat({
 }
 ```
 
+### Queue Stat schema
+
+```
+{
+  _id, // queueStatId
+  active: true,
+  queueId: '5fc72e6d3884be02e11fd48d',
+  instanceId: '5fc146db473fee8d98bd1de',
+  status: 'received', // pending, queued, uploading, starting, initializing, loading, running, webhook, complete, error, archived
+  statusText: '',
+  error: false,
+}
+```
+
+#### Queue stat storage instance id
+
+> The storage instance id will be an empty string or will contain the id of a storage reference when a custom payload is passed to a workflow.
+
 ### Instance schema
 
 ```
@@ -1020,24 +1040,6 @@ const instanceStat = await RequestWorkbox.Instance.downloadInstanceStat({
   usage: [], // Usage Stat schema
 }
 ```
-
-### Queue Stat schema
-
-```
-{
-  _id, // queueStatId
-  active: true,
-  queueId: '5fc72e6d3884be02e11fd48d',
-  instanceId: '5fc146db473fee8d98bd1de',
-  status: 'received', // pending, queued, uploading, starting, initializing, loading, running, webhook, complete, error, archived
-  statusText: '',
-  error: false,
-}
-```
-
-#### Queue stat storage instance id
-
-> The storage instance id will be an empty string or will contain the id of a storage reference when a custom payload is passed to a workflow.
 
 ### Instance Stat schema
 
