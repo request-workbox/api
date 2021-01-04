@@ -9,7 +9,9 @@ const
     incomingKeys = ['_id','active','name','projectId','tasks','payloads','webhooks','lockedResource', 'preventExecution','createdAt','updatedAt'];
 
 module.exports = {
-    validate: function(state, options = {}) {
+    validate: function(snapshot, incomingOptions = {}) {
+        if (!_.isPlainObject(incomingOptions)) throw new Error('Incorrect options type.')
+        const options = _.assignIn(snapshot, incomingOptions)
 
         if (!options.projectId) throw new Error('Missing project id.')
         if (!_.isHex(options.projectId)) throw new Error('Incorrect project id type.')
@@ -30,9 +32,10 @@ module.exports = {
             else throw new Error(`${err.message}`)
         }
     },
-    response: function(request) {
-        const response = _.pick(request.data, incomingKeys)
-        return response
+    response: function(response) {
+        // Returns object
+        const result = _.pick(response.data, incomingKeys)
+        return result
     },
     error: function(err) {
         throw new Error(err.message)

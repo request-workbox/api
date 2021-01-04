@@ -35,24 +35,24 @@ module.exports = function(state) {
                 return ValidateStorage.getStorage.error(err)
             }
         },
-        getTextStorageData: async function(options) {
+        getStorageData: async function(options) {
             try {
                 const snapshot = { projectId: state.projectId }
-                const payload = ValidateStorage.getTextStorageData.validate(snapshot, options)
-                const request = await ValidateStorage.getTextStorageData.request($axios, payload)
-                return ValidateStorage.getTextStorageData.response(request)
+                const payload = ValidateStorage.getStorageData.validate(snapshot, options)
+                const request = await ValidateStorage.getStorageData.request($axios, payload)
+                return ValidateStorage.getStorageData.response(request)
             } catch(err) {
-                return ValidateStorage.getTextStorageData.error(err)
+                return ValidateStorage.getStorageData.error(err)
             }
         },
-        getFileStorageData: async function(options) {
+        getStorageUsage: async function(options) {
             try {
                 const snapshot = { projectId: state.projectId }
-                const payload = ValidateStorage.getFileStorageData.validate(snapshot, options)
-                const request = await ValidateStorage.getFileStorageData.request($axios, payload)
-                return ValidateStorage.getFileStorageData.response(request)
+                const payload = ValidateStorage.getStorageUsage.validate(snapshot, options)
+                const request = await ValidateStorage.getStorageUsage.request($axios, payload)
+                return ValidateStorage.getStorageUsage.response(request)
             } catch(err) {
-                return ValidateStorage.getFileStorageData.error(err)
+                return ValidateStorage.getStorageUsage.error(err)
             }
         },
         updateTextStorageData: async function(options) {
@@ -63,16 +63,6 @@ module.exports = function(state) {
                 return ValidateStorage.updateTextStorageData.response(request)
             } catch(err) {
                 return ValidateStorage.updateTextStorageData.error(err)
-            }
-        },
-        updateFileStorageData: async function(options) {
-            try {
-                const snapshot = { projectId: state.projectId }
-                const payload = ValidateStorage.updateFileStorageData.validate(snapshot, options)
-                const request = await ValidateStorage.updateFileStorageData.request($axios, payload)
-                return ValidateStorage.updateFileStorageData.response(request)
-            } catch(err) {
-                return ValidateStorage.updateFileStorageData.error(err)
             }
         },
         saveStorageChanges: async function(options) {
@@ -103,16 +93,6 @@ module.exports = function(state) {
                 return ValidateStorage.restoreStorage.response(request)
             } catch(err) {
                 return ValidateStorage.restoreStorage.error(err)
-            }
-        },
-        getStorageUsage: async function(options) {
-            try {
-                const snapshot = { projectId: state.projectId }
-                const payload = ValidateStorage.getStorageUsage.validate(snapshot, options)
-                const request = await ValidateStorage.getStorageUsage.request($axios, payload)
-                return ValidateStorage.getStorageUsage.response(request)
-            } catch(err) {
-                return ValidateStorage.getStorageUsage.error(err)
             }
         },
     }

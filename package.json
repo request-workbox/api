@@ -1,6 +1,6 @@
 {
   "name": "request-workbox",
-  "version": "1.0.40",
+  "version": "1.0.44",
   "description": "Request Workbox API",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/request-workbox/api",
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "lodash": "^4.17.20",
     "moment": "^2.29.1"
   }

@@ -632,9 +632,9 @@ const storage = await RequestWorkbox.Storage.restoreStorage({
 |-----------|----------|-------------|
 | storageId | Yes | Storage id.
 
-### Storage.getTextStorageData(options)
+### Storage.getStorageData(options)
 
-Retreive text storage value. Requires read permissions, or write permissions if data returns sensitive response. Returns storage and storage value.
+Retreive storage value. Requires write permissions, or read permissions if data returns sensitive response and user has includeSensitive permission. Returns storage and storage value.
 
 ```
 // POST https://api.requestworkbox.com/get-text-storage-data
@@ -649,26 +649,9 @@ const storage = await RequestWorkbox.Storage.getTextStorageData({
 | storageId | Yes | Storage id.
 | projectId | Optional | Project id.
 
-### Storage.getFileStorageData(options)
-
-Retreive file storage value. Requires read permissions, or write permissions if data returns sensitive response. Returns file.
-
-```
-// POST https://api.requestworkbox.com/get-file-storage-data
-
-const storage = await RequestWorkbox.Storage.getFileStorageData({
-  storageId: '5fc726bd873fe02d99dd18f',
-})
-```
-
-| Option    | Required | Description |
-|-----------|----------|-------------|
-| storageId | Yes | Storage id.
-| projectId | Optional | Project id.
-
 ### Storage.getStorageUsage(options)
 
-Get storage usage. Requires write permissions. Returns storage and usage.
+Returns storage and usage. Requires read permissions.
 
 ```
 // POST https://api.requestworkbox.com/get-storage-usage
@@ -699,8 +682,8 @@ const storage = await RequestWorkbox.Storage.updateTextStorageData({
 | Option    | Required | Description |
 |-----------|----------|-------------|
 | storageId | Yes | Storage id.
+| storageValue | Yes | Storage value. 1MB max.
 | projectId | Optional | Project id.
-| storageValue | Optional | Storage value. 1MB max.
 
 ### Queue
 

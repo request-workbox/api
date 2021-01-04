@@ -9,7 +9,9 @@ const
     incomingKeys = ['_id','url','name','method','active','projectId','authorization','authorizationType','query','headers','body','lockedResource','preventExecution','sensitiveResponse','createdAt','updatedAt'];
 
 module.exports = {
-    validate: function(state, options = {}) {
+    validate: function(snapshot, incomingOptions = {}) {
+        if (!_.isPlainObject(incomingOptions)) throw new Error('Incorrect options type.')
+        const options = _.assignIn(snapshot, incomingOptions)
 
         if (!options.projectId) throw new Error('Missing project id.')
         if (!_.isHex(options.projectId)) throw new Error('Incorrect project id type.')
@@ -30,9 +32,13 @@ module.exports = {
             else throw new Error(`${err.message}`)
         }
     },
-    response: function(request) {
-        const response = _.pick(request.data, incomingKeys)
-        return response
+    response: function(response) {
+        // Returns array
+        const result = _.map(response.data, (response) => {
+            response = _.pick(response, incomingKeys)
+            return response
+        })
+        return result
     },
     error: function(err) {
         throw new Error(err.message)

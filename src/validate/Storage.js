@@ -1,26 +1,23 @@
 const 
-    createStorage = require('./WorkflowCreateWorkflow'),
-    listStorages = require('./WorkflowListWorkflows'),
-    getStorage = require('./WorkflowGetWorkflow'),
-    getTextStorageData = require('./WorkflowSaveWorkflowChanges'),
-    getFileStorageData = require('./WorkflowAddWorkflowTask'),
-    updateTextStorageData = require('./WorkflowDeleteWorkflowTask'),
-    updateFileStorageData = require('./WorkflowArchiveWorkflow'),
-    saveStorageChanges = require('./WorkflowRestoreWorkflow'),
-    archiveStorage = require('./WorkflowRestoreWorkflow'),
-    restoreStorage = require('./WorkflowRestoreWorkflow'),
-    getStorageUsage = require('./WorkflowRestoreWorkflow');
+    createStorage = require('./StorageCreateStorage'),
+    listStorages = require('./StorageListStorages'),
+    getStorage = require('./StorageGetStorage'),
+    getStorageData = require('./StorageGetStorageData'),
+    getStorageUsage = require('./StorageGetStorageUsage'),
+    updateTextStorageData = require('./StorageUpdateTextStorageData'),
+    saveStorageChanges = require('./StorageSaveStorageChanges'),
+    archiveStorage = require('./StorageArchiveStorage'),
+    restoreStorage = require('./StorageRestoreStorage');
+    
 
 module.exports = {
     createStorage,
     listStorages,
     getStorage,
-    getTextStorageData,
-    getFileStorageData,
+    getStorageData,
+    getStorageUsage,
     updateTextStorageData,
-    updateFileStorageData,
     saveStorageChanges,
     archiveStorage,
     restoreStorage,
-    getStorageUsage,
 }

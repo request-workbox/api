@@ -9,7 +9,9 @@ const
     incomingKeys = ['_id','active','projectId','workflowId','workflowName','queueType','queueId','stats','totalBytesDown','totalBytesUp','totalMs','createdAt','updatedAt'];
 
 module.exports = {
-    validate: function(state, options = {}) {
+    validate: function(snapshot, incomingOptions = {}) {
+        if (!_.isPlainObject(incomingOptions)) throw new Error('Incorrect options type.')
+        const options = _.assignIn(snapshot, incomingOptions)
 
         if (!options.instanceId) throw new Error('Missing instance id.')
         if (!options.statId) throw new Error('Missing stat id.')
@@ -33,9 +35,10 @@ module.exports = {
             else throw new Error(`${err.message}`)
         }
     },
-    response: function(request) {
-        const response = _.pick(request.data, incomingKeys)
-        return response
+    response: function(response) {
+        // Returns object
+        const result = _.pick(response.data, incomingKeys)
+        return result
     },
     error: function(err) {
         throw new Error(err.message)

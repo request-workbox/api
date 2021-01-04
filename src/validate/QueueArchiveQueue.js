@@ -9,7 +9,9 @@ const
     incomingKeys = ['_id','active','status','stats','instanceId','workflowId','workflowName','storageInstanceId','queueType','date','createdAt','updatedAt'];
 
 module.exports = {
-    validate: function(state, options = {}) {
+    validate: function(snapshot, incomingOptions = {}) {
+        if (!_.isPlainObject(incomingOptions)) throw new Error('Incorrect options type.')
+        const options = _.assignIn(snapshot, incomingOptions)
 
         if (!options.queueId) throw new Error('Missing queue id.')
         if (!_.isHex(options.queueId)) throw new Error('Incorrect queue id type.')
@@ -30,9 +32,10 @@ module.exports = {
             else throw new Error(`${err.message}`)
         }
     },
-    response: function(request) {
-        const response = _.pick(request.data, incomingKeys)
-        return response
+    response: function(response) {
+        // Returns object
+        const result = _.pick(response.data, incomingKeys)
+        return result
     },
     error: function(err) {
         throw new Error(err.message)
