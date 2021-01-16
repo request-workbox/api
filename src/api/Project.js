@@ -25,6 +25,16 @@ module.exports = function(state) {
                 return ValidateProject.listProjects.error(err)
             }
         },
+        listTeamProjects: async function(options) {
+            try {
+                const snapshot = { projectId: state.projectId }
+                const payload = ValidateProject.listTeamProjects.validate(snapshot, options)
+                const request = await ValidateProject.listTeamProjects.request($axios, payload)
+                return ValidateProject.listTeamProjects.response(request)
+            } catch(err) {
+                return ValidateProject.listTeamProjects.error(err)
+            }
+        },
         getProject: async function(options) {
             try {
                 const snapshot = { projectId: state.projectId }

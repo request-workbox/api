@@ -138,12 +138,22 @@ const project = await RequestWorkbox.Project.createProject()
 
 ### Project.listProjects()
 
-List projects you own or are a member of.
+List projects you own.
 
 ```
 // POST https://api.requestworkbox.com/list-projects
 
 const projects = await RequestWorkbox.Project.listProjects()
+```
+
+### Project.listTeamProjects()
+
+List projects you are a member of.
+
+```
+// POST https://api.requestworkbox.com/list-team-projects
+
+const teamProjects = await RequestWorkbox.Project.listTeamProjects()
 ```
 
 ### Project.getProject(options)
